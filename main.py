@@ -36,13 +36,15 @@ async def on_message(message):
 
 @bot.command()
 async def hello(ctx):
+    #建立button
     button1 =Button(label="人名",style=discord.ButtonStyle.green)
     button2 =Button(label="小家",style=discord.ButtonStyle.green)
     button3 =Button(label="所有社員",style=discord.ButtonStyle.green)
     # button4 =Button(label="特殊活動",style=discord.ButtonStyle.green)
     
+    #寄給輸入人名對應的後端功能
     async def name_callback(interaction):
-            #連接google sheet
+        #連接google sheet
         gc = pygsheets.authorize(service_file='/path')
         sht = gc.open_by_url(gs_url)
         df = pd.DataFrame(sht[0].get_all_records())
@@ -95,6 +97,7 @@ async def hello(ctx):
         except asyncio.TimeoutError:
             await ctx.send("超時囉你這小王八蛋")
 
+    #寄給所有社員對應的後端功能
     async def all_callback(interaction):
         gc = pygsheets.authorize(service_file='path')
         sht = gc.open_by_url(gs_url)
@@ -102,7 +105,8 @@ async def hello(ctx):
 
         emails = df['email'].tolist()
         await email(bot=bot,emails=emails,ctx=ctx)
-
+        
+    #寄給小家成員對應的後端功能
     async def home_callback(interaction):
         gc = pygsheets.authorize(service_file='C:/Users/CreamPy/Desktop/dcbot/mitc-system-455c51321ebc.json')
         sht = gc.open_by_url(gs_url)
@@ -132,9 +136,10 @@ async def hello(ctx):
         view.add_item(button1)
         view.add_item(button2)
         view.add_item(button3)
-
+        
         await ctx.send(view = view)
-
+        
+    # 特殊活動對應的後端功能
     # async def activity_callback(interaction):
     #     button1 =Button(label="焦點工作坊",style=discord.ButtonStyle.green)
     #     button2 =Button(label="期初大會",style=discord.ButtonStyle.green)
@@ -162,18 +167,21 @@ async def hello(ctx):
     #     view.add_item(button3)
     #     view.add_item(button4)
     #     await ctx.send("hi",view=view)
-          
+    
+    #把上面寫好的功能接到button上
     button1.callback = name_callback
     button2.callback = home_callback
     button3.callback = all_callback
     # button4.callback = activity_callback
 
-
+    #顯示button
     view=View()
     view.add_item(button1)
     view.add_item(button2)
     view.add_item(button3)
     # view.add_item(button4)
+    
     await ctx.send("Hi!",view=view)
-
+    
+#啟動機器人
 bot.run("key")
