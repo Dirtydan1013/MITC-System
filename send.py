@@ -5,7 +5,6 @@ import asyncio
 
 async def email(bot,ctx,emails):
         #開始接收
-        await ctx.send("了解")
         await ctx.send("請輸入郵件標題：")
 
         def check(message):
