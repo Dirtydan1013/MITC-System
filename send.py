@@ -32,7 +32,7 @@ async def email(bot,ctx,emails):
                     smtp.login("example@gmail.com", "aailwwzfjgjmdqdr")  # 登入寄件者gmail
                     for email in emails:
                         content["to"] = email #一個一個寄
-                    smtp.send_message(content)  # 寄送郵件
+                        smtp.send_message(content)  # 寄送郵件
                     print("Complete!")
 
                 except Exception as e:
